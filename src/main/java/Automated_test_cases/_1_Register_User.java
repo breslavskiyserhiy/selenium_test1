@@ -19,8 +19,8 @@ public class _1_Register_User {
         driver.get("https://automationexercise.com");
 
         //!!!!Accept
-        //WebElement acceptButton = driver.findElement(By.cssSelector(".fc-primary-button"));
-        //acceptButton.click();
+        WebElement acceptButton = driver.findElement(By.cssSelector(".fc-primary-button"));
+        acceptButton.click();
 
         //3. Verify that home page is visible successfully
         String currentUrl = driver.getCurrentUrl();
@@ -46,10 +46,10 @@ public class _1_Register_User {
         //6. Enter name and email address
             Thread.sleep(1000);
             WebElement nameField = driver.findElement(By.cssSelector("[data-qa='signup-name']"));
-            nameField.sendKeys("Serhii Test11");
+            nameField.sendKeys("Serhii Test16");
             Thread.sleep(1000);
             WebElement emailField = driver.findElement(By.cssSelector("[data-qa='signup-email']"));
-            emailField.sendKeys("serhii.test123123122@gmail.com");
+            emailField.sendKeys("serhii.test16test@gmail.com");
             Thread.sleep(1000);
 
             //7. Click 'Signup' button
