@@ -6,9 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
 
 public class _14_Place_Order_Register_while_Checkout {
@@ -26,7 +29,7 @@ public class _14_Place_Order_Register_while_Checkout {
         //2. Navigate to url 'http://automationexercise.com'
         driver.manage().window().maximize();
         driver.get("https://automationexercise.com");
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //!!!!Accept
         WebElement acceptButton = driver.findElement(By.cssSelector(".fc-primary-button"));
@@ -44,20 +47,20 @@ public class _14_Place_Order_Register_while_Checkout {
         //WebElement closeAd = driver.findElement(By.id("ad_position_box"));
         //closeAd.click();
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //4. Add products to cart
         WebElement view6Product  = driver.findElement(By.xpath("//a[@href='/product_details/6']"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", view6Product);
         view6Product.click();
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         WebElement addToCartButton = driver.findElement(By.cssSelector("button.btn.btn-default.cart"));
         addToCartButton.click();
 
         //5. Click 'Cart' button
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WebElement continueShoppingButton = driver.findElement(By.cssSelector("button[data-dismiss='modal']"));
         continueShoppingButton.click();
 
@@ -78,7 +81,7 @@ public class _14_Place_Order_Register_while_Checkout {
         proceedButton.click();
 
         //8. Click 'Register / Login' button
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WebElement regLogButton = driver.findElement(By.xpath("//p/a[@href='/login']"));
         regLogButton.click();
 
@@ -91,7 +94,7 @@ public class _14_Place_Order_Register_while_Checkout {
 
         WebElement signUpButton = driver.findElement(By.cssSelector("[data-qa='signup-button']"));
         signUpButton.click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         WebElement radioButton = driver.findElement(By.id("id_gender1"));
         radioButton.click();
@@ -139,7 +142,7 @@ public class _14_Place_Order_Register_while_Checkout {
 
         WebElement createAccountButton = driver.findElement(By.cssSelector("[data-qa='create-account']"));
         createAccountButton.click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //10. Verify 'ACCOUNT CREATED!' and click 'Continue' button
         WebElement text2 = driver.findElement(By.cssSelector("[data-qa='account-created']"));
@@ -151,7 +154,7 @@ public class _14_Place_Order_Register_while_Checkout {
 
         WebElement continueButton = driver.findElement(By.cssSelector("[data-qa='continue-button']"));
         continueButton.click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //11. Verify "' Logged in as username'" at top
         WebElement loggedInUser = driver.findElement(By.xpath("//li/a/b[contains(text(), 'Serhii Test1')]"));
@@ -163,11 +166,11 @@ public class _14_Place_Order_Register_while_Checkout {
 
         //12.Click 'Cart' button
         driver.findElement(By.xpath("//li/a[@href='/view_cart']")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //13. Click 'Proceed To Checkout' button
         driver.findElement(By.cssSelector("a.btn.btn-default.check_out")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //14. Verify Address Details and Review Your Order
         WebElement addressDetails = driver.findElement(By.xpath("//h2[@class='heading' and text()='Address Details']"));
@@ -187,15 +190,48 @@ public class _14_Place_Order_Register_while_Checkout {
         driver.findElement(By.cssSelector("[data-qa='cvc']")).sendKeys("111");
         driver.findElement(By.cssSelector("[data-qa='expiry-month']")).sendKeys("12");
         driver.findElement(By.cssSelector("[data-qa='expiry-year']")).sendKeys("2026");
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         //17. Click 'Pay and Confirm Order' button
-
         driver.findElement(By.cssSelector("[data-qa='pay-button']")).click();
+        Thread.sleep(1000);
+        driver.navigate().back();
 
         //18. Verify success message 'Your order has been placed successfully!'
-        //19. Click 'Delete Account' button
-        //20. Verify 'ACCOUNT DELETED!' and click 'Continue' button
 
+        /*WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement successMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div.alert-success.alert")));
+
+        String messageText = successMessage.getText();
+        System.out.println(messageText);
+
+        if (messageText.equals("Your order has been placed successfully!")) {
+            System.out.println("Success Message is visible");
+        } else {System.out.println("Success Message is not visible");}*/
+
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='success_message']")));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String messageText = (String) js.executeScript(
+                "return document.evaluate(\"//div[@id='success_message']//div[contains(text(), 'Your order has been placed successfully!')]\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue?.innerText;"
+        );
+        if (messageText.equals("Your order has been placed successfully!")) {
+            System.out.println("Success Message is visible");
+        } else {System.out.println("Success Message is not visible");}
+
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector("[data-qa='pay-button']")).click();
+
+        //19. Click 'Delete Account' button
+        driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
+
+        //20. Verify 'ACCOUNT DELETED!' and click 'Continue' button
+        WebElement accountDeleted = driver.findElement(By.cssSelector("[data-qa='account-deleted']"));
+        if (accountDeleted.getText().equals("ACCOUNT DELETED!")) {
+            System.out.println("Account Deleted is visible");
+        } else {System.out.println("Account Deleted is not visible");}
+
+        driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
+
+        driver.quit();
     }
 }
