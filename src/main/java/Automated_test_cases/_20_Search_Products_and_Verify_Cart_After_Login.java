@@ -48,8 +48,11 @@ public class _20_Search_Products_and_Verify_Cart_After_Login {
 
 
         //9. Click 'Cart' button and verify that products are visible in cart
+
         //10. Click 'Signup / Login' button and submit login details
+
         //11. Again, go to Cart page
+
         //12. Verify that those products are visible in cart after login as well
     }
 }
