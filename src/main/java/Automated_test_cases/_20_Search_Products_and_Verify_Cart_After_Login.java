@@ -1,12 +1,12 @@
 package Automated_test_cases;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.interactions.Actions;
+
 
 import java.time.Duration;
 import java.util.List;
@@ -16,13 +16,14 @@ public class _20_Search_Products_and_Verify_Cart_After_Login {
         //1. Launch browser
         System.setProperty("webdriver.chrome.driver", "C:/AQA/drivers/edgedriver_win64/msedgedriver.exe");
         EdgeOptions options = new EdgeOptions();
-        options.addArguments("--disable-popup-blocking"); // Вимкнути спливаючі вікна
-        options.addArguments("--disable-blink-features=AutomationControlled"); // Зробити браузер менш помітним для скриптів
-        options.addArguments("--disable-extensions"); // Вимкнути розширення
-        options.addArguments("--disable-infobars"); // Прибрати інформаційну панель
-        options.addArguments("--block-new-web-contents"); // Блокувати нові вкладки/вікна
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--block-new-web-contents");
 
         WebDriver driver = new EdgeDriver(options);
+        Actions action = new Actions(driver);
 
         driver.manage().window().maximize();
 
@@ -31,7 +32,7 @@ public class _20_Search_Products_and_Verify_Cart_After_Login {
         driver.get("https://automationexercise.com");
 
         //!!!!Accept
-        //driver.findElement(By.cssSelector(".fc-primary-button")).click();
+        driver.findElement(By.cssSelector(".fc-primary-button")).click();
 
         //3. Click on 'Products' button
         driver.findElement(By.xpath("//li/a[@href='/products']")).click();
@@ -69,19 +70,64 @@ public class _20_Search_Products_and_Verify_Cart_After_Login {
         }
 
         //8. Add those products to cart
-        List<WebElement> addGreenToCart = driver.findElements(By.cssSelector("a.btn.btn-default.add-to-cart"));
-        for (WebElement clickProd : addGreenToCart) {
-            clickProd.click();
-            driver.findElement(By.xpath("//div[@class='modal-footer']//button[contains(@class, 'close-modal')]")).click();
-            break;
+        List<WebElement> addToCartButtons = driver.findElements(By.cssSelector(".features_items .btn.btn-default.add-to-cart"));
+
+        for (int i = 0; i < addToCartButtons.size(); i++) {
+            WebElement button = addToCartButtons.get(i);
+
+            if (button.isDisplayed()) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
+
+                WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='modal-footer']//button[contains(@class, 'close-modal')]")));
+                closeButton.click();
+
+                Thread.sleep(1000);
+            }
         }
 
         //9. Click 'Cart' button and verify that products are visible in cart
+        WebElement cartButton = driver.findElement(By.xpath("//a[@href='/view_cart']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", cartButton);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cartButton);
+
+        List<WebElement> addToCartProducts = driver.findElements(By.cssSelector("tbody .cart_description h4"));
+
+        for ( WebElement product : addToCartProducts) {
+            String productText = product.getText();
+
+            if (productText.contains("Green")) {
+                System.out.println("Product: " + productText + " is visible");
+            }  else {System.out.println("Product is not visible");}
+
+        }
+
 
         //10. Click 'Signup / Login' button and submit login details
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        Thread.sleep(3000);
+        driver.findElement(By.cssSelector("[data-qa='login-email']")).sendKeys("serhii.test16@gmail.com");
+        driver.findElement(By.cssSelector("[data-qa='login-password']")).sendKeys("Test12345!");
+        driver.findElement(By.cssSelector("[data-qa='login-button']")).click();
+        Thread.sleep(1000);
 
         //11. Again, go to Cart page
+        driver.findElement(By.xpath("//a[@href='/view_cart']")).click();
 
         //12. Verify that those products are visible in cart after login as well
+        List<WebElement> addToCartProducts1 = driver.findElements(By.cssSelector("tbody .cart_description h4"));
+
+        for ( WebElement product1 : addToCartProducts1) {
+            String productText1 = product1.getText();
+
+            if (productText1.contains("Green")) {
+                System.out.println("After Login - Product: " + productText1 + " is visible");
+            }  else {System.out.println("After Login - Product is not visible");}
+
+        }
+
+        //Logout
+        driver.findElement(By.xpath("//a[@href='/logout']")).click();
+        System.out.println("Successfull");
     }
 }
