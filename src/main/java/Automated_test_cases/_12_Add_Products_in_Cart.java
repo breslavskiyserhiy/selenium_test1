@@ -60,7 +60,7 @@ public class _12_Add_Products_in_Cart {
 
         //9. Verify both products are added to Cart
         Thread.sleep(2000);
-        WebElement productsCartList  = driver.findElement(By.id("cart_info_table"));
+        //WebElement productsCartList  = driver.findElement(By.id("cart_info_table"));
         List<WebElement> products = driver.findElements(By.xpath("//table[@id='cart_info_table']/tbody/tr"));
         int productsCount = products.size();
         if (productsCount == 2) {
