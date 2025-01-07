@@ -28,7 +28,7 @@ public class _23_Verify_address_details_in_checkout_page {
         Thread.sleep(1000);
 
         //!!!!Accept
-        driver.findElement(By.cssSelector(".fc-primary-button")).click();
+        //driver.findElement(By.cssSelector(".fc-primary-button")).click();
         Thread.sleep(3000);
 
         //3. Verify that home page is visible successfully
@@ -111,7 +111,7 @@ public class _23_Verify_address_details_in_checkout_page {
         }
 
         driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
         //7. Verify ' Logged in as username' at top
         WebElement loggedInUser = driver.findElement(By.xpath("//li/a/b[contains(text(), 'Serhii Test1')]"));
@@ -147,9 +147,44 @@ public class _23_Verify_address_details_in_checkout_page {
         //11. Click Proceed To Checkout
         driver.findElement(By.cssSelector("a.btn.btn-default.check_out")).click();
 
-        //12. Verify that the delivery address is same address filled at the time registration of account
+        //12. Verify that the delivery address is same address filled at the time registration of account address_delivery
+
+        Thread.sleep(3000);
+        boolean firstLastName = driver.findElement(By.cssSelector(".address_firstname.address_lastname")).isDisplayed();
+        boolean address1 = driver.findElement(By.xpath("//ul[@id='address_delivery']//li[contains(@class, 'address_address1') and contains(@class, 'address_address2')][text()='Sweet Home']")).isDisplayed();
+        boolean address2 = driver.findElement(By.xpath("//ul[@id='address_delivery']//li[contains(@class, 'address_address1') and contains(@class, 'address_address2')][text()='Sweet Street 12/2']")).isDisplayed();
+        boolean address4 = driver.findElement(By.xpath("//ul[@id='address_delivery']//li[contains(@class, 'address_city') and contains(@class, 'address_state_name') and contains(@class, 'address_postcode')]")).isDisplayed();
+        boolean addressCountry = driver.findElement(By.xpath("//ul[@id='address_delivery']//li[contains(@class, 'address_country_name')][text()='United States']")).isDisplayed();
+        boolean postCode = driver.findElement(By.xpath("//ul[@id='address_delivery']//li[contains(@class, 'address_phone')][text()='+7 987654321']")).isDisplayed();
+
+
+        if (firstLastName && address1 && address2 && address4 && addressCountry && postCode) {
+            System.out.println("Delivery address the same as registration");
+        } else {System.out.println("ERROR");}
+
         //13. Verify that the billing address is same address filled at the time registration of account
+        Thread.sleep(3000);
+        boolean firstLastName1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_firstname') and contains(@class, 'address_lastname')][text()='Mr. Serhii Breslavskiy']")).isDisplayed();
+        boolean address1_1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_address1') and contains(@class, 'address_address2')][text()='Sweet Home']")).isDisplayed();
+        boolean address2_1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_address1') and contains(@class, 'address_address2')][text()='Sweet Street 12/2']")).isDisplayed();
+        boolean address4_1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_city') and contains(@class, 'address_state_name') and contains(@class, 'address_postcode')]")).isDisplayed();
+        boolean addressCountry_1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_country_name')][text()='United States']")).isDisplayed();
+        boolean postCode_1 = driver.findElement(By.xpath("//ul[@id='address_invoice']//li[contains(@class, 'address_phone')][text()='+7 987654321']")).isDisplayed();
+
+        if (firstLastName1 && address1_1 && address2_1 && address4_1 && addressCountry_1 && postCode_1) {
+            System.out.println("Billing address the same as registration");
+        } else {System.out.println("ERROR");}
+
         //14. Click 'Delete Account' button
+        driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
+
         //15. Verify 'ACCOUNT DELETED!' and click 'Continue' button
+        if (driver.findElement(By.cssSelector("[data-qa='account-deleted']")).isDisplayed()) {
+            System.out.println("Account deleted");
+        } else {System.out.println("ERROR");}
+
+        Thread.sleep(3000);
+        //quit
+        driver.quit();
     }
 }
