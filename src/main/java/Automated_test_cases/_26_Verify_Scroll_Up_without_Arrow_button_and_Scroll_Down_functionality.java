@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-public class _25_Verify_Scroll_Up_using_Arrow_button_and_Scroll_Down_functionality {
+public class _26_Verify_Scroll_Up_without_Arrow_button_and_Scroll_Down_functionality {
     public static void main(String[] args) throws InterruptedException {
         //1. Launch browser
         System.setProperty("webdriver.chrome.driver", "C:/AQA/drivers/edgedriver_win64/msedgedriver.exe");
@@ -48,14 +48,16 @@ public class _25_Verify_Scroll_Up_using_Arrow_button_and_Scroll_Down_functionali
             System.out.println("SUBSCRIPTION is visible");
         } else { System.out.println("SUBSCRIPTION is not visible"); }
 
-        //6. Click on arrow at bottom right side to move upward
-        driver.findElement(By.id("scrollUp")).click();
+        //6. Scroll up page to top
+        jsExecutor.executeScript("window.scrollTo(0, top)");
+        Thread.sleep(2000);
+
 
         //7. Verify that page is scrolled up and 'Full-Fledged practice website for Automation Engineers' text is visible on screen
-
         if (driver.findElement(By.xpath("//h2[contains(text(), 'Full-Fledged practice website')]")).isDisplayed()) {
             System.out.println("Full Fledged practice website is visible");
         } else {System.out.println("Full Fledged practice website is not visible"); }
+        Thread.sleep(2000);
 
         //quit from Edge browser
         driver.quit();
