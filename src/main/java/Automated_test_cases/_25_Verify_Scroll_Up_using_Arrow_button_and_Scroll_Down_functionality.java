@@ -3,7 +3,6 @@ package Automated_test_cases;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
@@ -39,7 +38,6 @@ public class _25_Verify_Scroll_Up_using_Arrow_button_and_Scroll_Down_functionali
         }
 
         //4. Scroll down page to bottom
-        WebElement recomendedItems = driver.findElement(By.id("recommended-item-carousel"));
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("window.scrollTo(0, document.body.scrollHeight)");
         Thread.sleep(2000);
@@ -60,7 +58,7 @@ public class _25_Verify_Scroll_Up_using_Arrow_button_and_Scroll_Down_functionali
             System.out.println("Full Fledged practice website is visible");
         } else {System.out.println("Full Fledged practice website is not visible"); }
 
-        //quit
+        //quit from Edge browser
         driver.quit();
     }
 }
